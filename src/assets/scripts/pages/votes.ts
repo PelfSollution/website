@@ -137,7 +137,6 @@ export default class PageVotes {
         return false;
       }
     } else if (setKey === 'custom') {
-      
       if (setCustom === 'appURL' || setCustom === 'discussionLinks' || setCustom === 'socialMedia') {
         if(!Utils.isURL(setValue)) {
           $('#vote-set-value').addClass('is-invalid');
@@ -161,7 +160,6 @@ export default class PageVotes {
           return false;
         }
       }
-
     } 
     else {
       return false;
@@ -209,7 +207,7 @@ export default class PageVotes {
         case 'lockMinLength':
         case 'lockMaxLength':
           $target.addClass('input-number').removeClass('percent');
-          break 
+          break;
         case 'quorum':
         case 'support':
           $target.addClass('input-number percent');
@@ -223,7 +221,7 @@ export default class PageVotes {
 
     $('#vote-set-custom').on('change', e => {
       const setCustom = $(e.target).val();
-      console.log(setCustom);
+
       $('#vote-set-value').val('');
       switch(setCustom) {
         case 'appURL':
@@ -348,7 +346,6 @@ export default class PageVotes {
         if(!await this.setValidate()) {
           return;
         }
-        console.log(setKey);
 
         // want to set the key to custom value (App url, community desc, etc)
         if (setKey === 'custom') {
@@ -362,8 +359,6 @@ export default class PageVotes {
         voteParams['value'] = setValue;
       }
       
-      console.log('Voteparams: ', voteParams['key']);
-
       if(!note.length) {
         $('#vote-note').addClass('is-invalid');
         return;
