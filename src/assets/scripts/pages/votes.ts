@@ -180,11 +180,15 @@ export default class PageVotes {
         case 'lockMinLength':
         case 'lockMaxLength':
           $target.addClass('input-number').removeClass('percent');
-          break;
+          break;  
         case 'quorum':
         case 'support':
           $target.addClass('input-number percent');
           break;
+        case 'custom':
+          $('.vote-set-custom').show();
+          $target.removeClass('input-number percent');
+          break; 
       }
     });
 
