@@ -137,19 +137,29 @@ export default class PageVotes {
         return false;
       }
     } else if (setKey === 'custom') {
-      console.log('validating custom');
       
       if (setCustom === 'appURL' || setCustom === 'discussionLinks' || setCustom === 'socialMedia') {
         if(!Utils.isURL(setValue)) {
           $('#vote-set-value').addClass('is-invalid');
+          $('.lock-set-value-invalid').text('Need to type a valid URL.');
           return false; 
         }
       } else if(setCustom === 'communityDesc') {
-
+        if(!setValue.length) {
+          $('.lock-set-value-invalid').text('Need to type a description.');
+          $('#vote-set-value').addClass('is-invalid');
+          return false;
+        }
       } else if(setCustom === 'logo') {
-
-      } else if(setCustom === 'customEntry') {
-
+          $('.lock-set-value-invalid').text('Need to type a valid logo URL.');
+          $('#vote-set-value').addClass('is-invalid');
+          return false;
+      } else if(setCustom === 'otherCustom') {
+        if(!setValue.length) {
+          $('.lock-set-value-invalid').text('Need to type a key.');
+          $('#vote-set-value').addClass('is-invalid');
+          return false;
+        }
       }
 
     } 
@@ -210,12 +220,11 @@ export default class PageVotes {
           break; 
       }
     });
+
     $('#vote-set-custom').on('change', e => {
       const setCustom = $(e.target).val();
       console.log(setCustom);
       $('#vote-set-value').val('');
-
-      $('.vote-recipient').hide();
       switch(setCustom) {
         case 'appURL':
         case 'communityDesc':
