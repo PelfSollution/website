@@ -76,7 +76,13 @@
               option(value="logo") Community Logo
               option(value="discussionLinks") Discussion Links
               option(value="socialMedia") Social Media Links 
-              option(value="otherCustom") Other   
+              option(value="otherCustom") Custom Key Entry   
+
+        .vote-fields.vote-set-customKey(style="display: none")
+          .mb-3
+            label.form-label Custom Key
+            input#vote-set-customKey.form-control(type="text")
+            .lock-set-customKey-invalid.invalid-feedback  
 
         //- This one changes depending on what the user has selected for their form-label, 
         //- also could add .input-number to input

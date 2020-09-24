@@ -95,7 +95,8 @@ export default class PageVotes {
     const setKey = $('#vote-set-key').val();
     const setCustom = $('#vote-set-custom').val(); 
     let setValue: string | number = $('#vote-set-value').val().toString().trim();
-    
+    let setCustomKeyEntry: string | number = $('#vote-set-customKey').val().toString().trim();
+
     if(setKey === 'quorum' || setKey === 'support') {
       setValue = +setValue;
       if(isNaN(setValue) || setValue < 1 || setValue > 99 || !Number.isInteger(setValue)) {
@@ -154,9 +155,14 @@ export default class PageVotes {
           $('#vote-set-value').addClass('is-invalid');
           return false;
       } else if(setCustom === 'otherCustom') {
-        if(!setValue.length) {
-          $('.lock-set-value-invalid').text('Need to type a key.');
-          $('#vote-set-value').addClass('is-invalid');
+        if(!setCustomKeyEntry.length) {
+          $('.lock-set-customKey-invalid').text('Need to type a key.');
+          $('#vote-set-customKey').addClass('is-invalid');
+          return false;
+        }
+        if(!Utils.isCustomEntry(setCustomKeyEntry)) {
+          $('.lock-set-customKey-invalid').text('Custom key entries musts be alphanumeric.');
+          $('#vote-set-customKey').addClass('is-invalid');
           return false;
         }
       }
@@ -199,6 +205,7 @@ export default class PageVotes {
 
       $('.vote-recipient').hide();
       $('.vote-set-custom').hide();
+      $('.vote-set-customKey').hide();
       switch(setKey) {
         case 'role':
           $('.vote-recipient').show();
@@ -222,13 +229,27 @@ export default class PageVotes {
     $('#vote-set-custom').on('change', e => {
       const setCustom = $(e.target).val();
 
-      $('#vote-set-value').val('');
+      $('.vote-recipient').hide();
+      $('.vote-set-customKey').hide();
       switch(setCustom) {
         case 'appURL':
+          $('.vote-set-customKey').hide();
+          break;
         case 'communityDesc':
+          $('.vote-set-customKey').hide();
+          break;
         case 'logo':
+          $('.vote-set-customKey').hide();
+          break;
         case 'discussionLinks':
+          $('.vote-set-customKey').hide();
+          break;
         case 'socialMedia':
+          $('.vote-set-customKey').hide();
+          break;
+        case 'otherCustom':
+          $('.vote-set-customKey').show();
+          break;
       }
     });
 
@@ -305,6 +326,7 @@ export default class PageVotes {
       const length = +$('#vote-lock-length').val().toString().trim();
       const target = $('#vote-target').val().toString().trim();
       const setKey = $('#vote-set-key').val();
+      const setCustomKey = $('#vote-set-customKey').val();
       const setCustom = $('#vote-set-custom').val(); 
 
       let setValue = $('#vote-set-value').val().toString().trim();
@@ -346,11 +368,19 @@ export default class PageVotes {
         if(!await this.setValidate()) {
           return;
         }
-
-        // want to set the key to custom value (App url, community desc, etc)
+        
+        // Set the key to custom value (App url, community desc, etc)
         if (setKey === 'custom') {
-          // @ts-ignore
-          voteParams['key'] = setCustom;
+          // key is a custom user key
+          if (setCustom === 'otherCustom') {
+            // @ts-ignore
+            voteParams['key'] = setCustomKey;
+            console.log("NEW KEY IS: ", setCustomKey)
+          }
+          else {
+            // @ts-ignore
+            voteParams['key'] = setCustom;
+          }
         }
         else {
           // @ts-ignore

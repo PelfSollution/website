@@ -59,4 +59,11 @@ export default class Utils {
     var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
     return (res !== null)
   };
+
+  static isCustomEntry(string) {
+    // Check if input is alphanumeric
+    if(!string.match("^[A-Za-z0-9]+$")) {return false;}
+    
+    return true; 
+  };
 }
