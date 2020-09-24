@@ -93,7 +93,7 @@ export default class PageVotes {
 
     const recipient = $('#vote-recipient').val().toString().trim();
     const setKey = $('#vote-set-key').val();
-    const customKey = $('#vote-set-custom').val(); 
+    const setCustom = $('#vote-set-custom').val(); 
     let setValue: string | number = $('#vote-set-value').val().toString().trim();
     
     if(setKey === 'quorum' || setKey === 'support') {
@@ -136,16 +136,22 @@ export default class PageVotes {
         $('#vote-set-value').addClass('is-invalid');
         return false;
       }
-    } else if (customKey === 'appURL') {
-      console.log("Yeet an app url");
-    } else if (customKey === 'communityDesc') {
-      console.log("communityDesc");
-    } else if (customKey === 'logo') {
-      console.log("logo");
-    } else if (customKey === 'discussionLinks') {
-      console.log("discussionLinks");
-    } else if (customKey === 'socialMedia') {
-      console.log("socialMedia");
+    } else if (setKey === 'custom') {
+      console.log('validating custom');
+      
+      if (setCustom === 'appURL' || setCustom === 'discussionLinks' || setCustom === 'socialMedia') {
+        if(!Utils.isURL(setValue)) {
+          $('#vote-set-value').addClass('is-invalid');
+          return false; 
+        }
+      } else if(setCustom === 'communityDesc') {
+
+      } else if(setCustom === 'logo') {
+
+      } else if(setCustom === 'customEntry') {
+
+      }
+
     } 
     else {
       return false;
@@ -181,10 +187,10 @@ export default class PageVotes {
 
     $('#vote-set-key').on('change', e => {
       const setKey = $(e.target).val();
-      console.log(setKey);
       const $target = $('#vote-set-value').val('');
 
       $('.vote-recipient').hide();
+      $('.vote-set-custom').hide();
       switch(setKey) {
         case 'role':
           $('.vote-recipient').show();
@@ -193,7 +199,7 @@ export default class PageVotes {
         case 'lockMinLength':
         case 'lockMaxLength':
           $target.addClass('input-number').removeClass('percent');
-          break;  
+          break 
         case 'quorum':
         case 'support':
           $target.addClass('input-number percent');
@@ -207,27 +213,16 @@ export default class PageVotes {
     $('#vote-set-custom').on('change', e => {
       const setCustom = $(e.target).val();
       console.log(setCustom);
-      // const $target = $('#vote-set-value').val('');
+      $('#vote-set-value').val('');
 
-      // $('.vote-recipient').hide();
-      // switch(setKey) {
-      //   case 'role':
-      //     $('.vote-recipient').show();
-      //     $target.removeClass('input-number percent');
-      //     break;
-      //   case 'lockMinLength':
-      //   case 'lockMaxLength':
-      //     $target.addClass('input-number').removeClass('percent');
-      //     break;  
-      //   case 'quorum':
-      //   case 'support':
-      //     $target.addClass('input-number percent');
-      //     break;
-      //   case 'custom':
-      //     $('.vote-set-custom').show();
-      //     $target.removeClass('input-number percent');
-      //     break; 
-      // }
+      $('.vote-recipient').hide();
+      switch(setCustom) {
+        case 'appURL':
+        case 'communityDesc':
+        case 'logo':
+        case 'discussionLinks':
+        case 'socialMedia':
+      }
     });
 
     $('#vote-recipient, #vote-target').on('input', async e => {
@@ -304,6 +299,7 @@ export default class PageVotes {
       const target = $('#vote-target').val().toString().trim();
       const setKey = $('#vote-set-key').val();
       const setCustom = $('#vote-set-custom').val(); 
+
       let setValue = $('#vote-set-value').val().toString().trim();
       const note = $('#vote-note').val().toString().trim();
 
@@ -343,9 +339,17 @@ export default class PageVotes {
         if(!await this.setValidate()) {
           return;
         }
-        
-        // @ts-ignore
-        voteParams['key'] = setKey;
+        console.log(setKey);
+
+        // want to set the key to custom value (App url, community desc, etc)
+        if (setKey === 'custom') {
+          // @ts-ignore
+          voteParams['key'] = setCustom;
+        }
+        else {
+          // @ts-ignore
+          voteParams['key'] = setKey;
+        }
         voteParams['value'] = setValue;
       }
       

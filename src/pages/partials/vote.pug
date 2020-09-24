@@ -66,24 +66,25 @@
             option(value="lockMaxLength") Maximum lock length
             option(value="role") Role
             option(value="custom") Custom
-
-      .vote-fields.vote-set-custom(style="display: none")
-        .mb-3
-          label.form-label Name
-          select#vote-set-custom.form-select
-            option(value="appURL") App URL 
-            option(value="communityDesc") Community Description
-            option(value="logo") Community Logo
-            option(value="discussionLinks") Discussion Links
-            option(value="socialMedia") Social Media Links
             
+        .vote-fields.vote-set-custom(style="display: none")
+          .mb-3
+            label.form-label Name
+            select#vote-set-custom.form-select
+              option(value="appURL") App URL 
+              option(value="communityDesc") Community Description
+              option(value="logo") Community Logo
+              option(value="discussionLinks") Discussion Links
+              option(value="socialMedia") Social Media Links 
+              option(value="otherCustom") Other   
+
         //- This one changes depending on what the user has selected for his form-label, 
         //- also could add .input-number to input
         .mb-3
           label.vote-set-key.form-label Value
           input#vote-set-value.form-control(type="text")
           .lock-set-value-invalid.invalid-feedback  
-
+            
       .mb-3
         label.form-label Note
         textarea#vote-note.form-control
