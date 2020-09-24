@@ -93,8 +93,9 @@ export default class PageVotes {
 
     const recipient = $('#vote-recipient').val().toString().trim();
     const setKey = $('#vote-set-key').val();
+    const customKey = $('#vote-set-custom').val(); 
     let setValue: string | number = $('#vote-set-value').val().toString().trim();
-
+    
     if(setKey === 'quorum' || setKey === 'support') {
       setValue = +setValue;
       if(isNaN(setValue) || setValue < 1 || setValue > 99 || !Number.isInteger(setValue)) {
@@ -135,7 +136,18 @@ export default class PageVotes {
         $('#vote-set-value').addClass('is-invalid');
         return false;
       }
-    } else {
+    } else if (customKey === 'appURL') {
+      console.log("Yeet an app url");
+    } else if (customKey === 'communityDesc') {
+      console.log("communityDesc");
+    } else if (customKey === 'logo') {
+      console.log("logo");
+    } else if (customKey === 'discussionLinks') {
+      console.log("discussionLinks");
+    } else if (customKey === 'socialMedia') {
+      console.log("socialMedia");
+    } 
+    else {
       return false;
     }
 
@@ -169,6 +181,7 @@ export default class PageVotes {
 
     $('#vote-set-key').on('change', e => {
       const setKey = $(e.target).val();
+      console.log(setKey);
       const $target = $('#vote-set-value').val('');
 
       $('.vote-recipient').hide();
@@ -190,6 +203,31 @@ export default class PageVotes {
           $target.removeClass('input-number percent');
           break; 
       }
+    });
+    $('#vote-set-custom').on('change', e => {
+      const setCustom = $(e.target).val();
+      console.log(setCustom);
+      // const $target = $('#vote-set-value').val('');
+
+      // $('.vote-recipient').hide();
+      // switch(setKey) {
+      //   case 'role':
+      //     $('.vote-recipient').show();
+      //     $target.removeClass('input-number percent');
+      //     break;
+      //   case 'lockMinLength':
+      //   case 'lockMaxLength':
+      //     $target.addClass('input-number').removeClass('percent');
+      //     break;  
+      //   case 'quorum':
+      //   case 'support':
+      //     $target.addClass('input-number percent');
+      //     break;
+      //   case 'custom':
+      //     $('.vote-set-custom').show();
+      //     $target.removeClass('input-number percent');
+      //     break; 
+      // }
     });
 
     $('#vote-recipient, #vote-target').on('input', async e => {
@@ -265,6 +303,7 @@ export default class PageVotes {
       const length = +$('#vote-lock-length').val().toString().trim();
       const target = $('#vote-target').val().toString().trim();
       const setKey = $('#vote-set-key').val();
+      const setCustom = $('#vote-set-custom').val(); 
       let setValue = $('#vote-set-value').val().toString().trim();
       const note = $('#vote-note').val().toString().trim();
 
@@ -309,6 +348,8 @@ export default class PageVotes {
         voteParams['key'] = setKey;
         voteParams['value'] = setValue;
       }
+      
+      console.log('Voteparams: ', voteParams['key']);
 
       if(!note.length) {
         $('#vote-note').addClass('is-invalid');
